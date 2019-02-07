@@ -5,16 +5,20 @@
            (com.cognitect.transit WriteHandler TransitFactory ArrayReadHandler ArrayReader)
            (hitch2.descriptor Descriptor)))
 
+(defn curried-dtor []
+  (fn [name]
+    (fn [term]
+      (->Descriptor name term))))
+
 (def make-pos-dtor
   (reify ArrayReadHandler
     (fromRep [_ o] o)
     (arrayReader [_]
       (reify ArrayReader
-        (init [_] nil)
-        (init [_ ^int size] nil)
-        (add [_ s item] (if (nil? s)
-                          (->Descriptor item nil)
-                          (assoc s :term item)))
+        (init [_] (curried-dtor))
+        (init [_ ^int size] (curried-dtor))
+        (add [_ s item]
+          (s item))
         (complete [_ s] s)))))
 
 (def DTORHandler (reify WriteHandler
