@@ -1,8 +1,14 @@
-{:deps {org.clojure/clojure        {:mvn/version "1.9.0"}
-        com.cognitect/transit-clj  {:mvn/version "0.8.313"}
-        com.breezeehr/hitch2       {:mvn/version "0.3.2-SNAPSHOT"
-                                    :exclusions  [com.clojure/clojurescript]}}
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
-                                                          :sha "209b64504cb3bd3b99ecfec7937b358a879f55c1"}}
-                  :main-opts ["-m" "cognitect.test-runner"]}}}
+{:aliases {:runner {:extra-deps
+                      {com.cognitect/test-runner
+                         {:git/url
+                            "https://github.com/cognitect-labs/test-runner",
+                          :sha "76568540e7f40268ad2b646110f237a60295fa3c"}},
+                    :main-opts ["-m" "cognitect.test-runner" "-d" "test"]},
+           :test {:extra-deps {org.clojure/test.check {:mvn/version "RELEASE"}},
+                  :extra-paths ["test"]}},
+ :deps {com.cognitect/transit-clj {:mvn/version "0.8.313"},
+        org.clojure/clojure {:mvn/version "1.10.3"}
+        com.breezeehr/hitch2 {:local/root "../hitch2"},},
+ :mvn/repos {"releases" {:url "s3p://breezepackages/releases"},
+             "snapshots" {:url "s3p://breezepackages/snapshots"}},
+ :paths ["src" "resources"]}
